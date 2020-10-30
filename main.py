@@ -161,17 +161,17 @@ def RUN():
     # data = ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x']
     # data = ['b','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x']
     # data = ['x','f','n','f','p','f','w','b','n','t','e','s','f','w','w','p','w','o','e','k','a','g']
-    data = ['x','f','n','f','n','f','w','b','n','t','e','s','f','w','w','p','w','o','e','k','a','g']
-    k = 3
+    inputData = ['x','f','n','f','n','f','w','b','n','t','e','s','f','w','w','p','w','o','e','k','a','g']
+    InputK = 3
     hasil = ""
-    if(ruleKhusus(data)==True):
+    if(ruleKhusus(inputData)==True):
         hasil ="Beracun"
     else:
-        dataBaru = numeric(data)
-        valid = validasi(dictLatih,k)
+        dataBaru = numeric(inputData)
+        valid = validasi(dictLatih,InputK)
         euclidean = euclideanDistance(dataBaru,dictLatih)
         weight = weighting(valid,euclidean)
-        indexTerbesar = terbesar(k,weight)
+        indexTerbesar = terbesar(InputK,weight)
         hasil = diagnosis(dictLatih,indexTerbesar)
     print(hasil)
 
