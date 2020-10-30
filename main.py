@@ -17,9 +17,8 @@ def validasi(data,k):
                 if(data[index][22]==data[index-(l+1)][22]):
                     sumValid += 1
         nilaiValidasi = sumValid/k
-        print(i,"-Validasi : ",nilaiValidasi)
         validasi.append(nilaiValidasi)
-    return 0
+    return validasi
 
 def ruleKhusus(data):
     dictRule = {'ruleA':['b'],
@@ -67,6 +66,45 @@ def numeric(dataInput):
     for i in range(len(dataInput)):
         dataBaru.append(dictNumeric[i+1][dataInput[i]])
     return dataBaru
+
+def euclideanDistance(dataInput, dataLatih):
+    nilaiEuclidean = []
+    for i in range(len(dataLatih)):
+        baru = (dataInput[0]-dataLatih[i+1][0])**2 + (dataInput[1]-dataLatih[i+1][1])**2 + (dataInput[2]-dataLatih[i+1][2])**2+ (dataInput[3]-dataLatih[i+1][3])**2 + (dataInput[4]-dataLatih[i+1][4])**2 + (dataInput[5]-dataLatih[i+1][5])**2+ (dataInput[6]-dataLatih[i+1][6])**2 + (dataInput[7]-dataLatih[i+1][7])**2 + (dataInput[8]-dataLatih[i+1][8])**2+ (dataInput[9]-dataLatih[i+1][9])**2 + (dataInput[10]-dataLatih[i+1][10])**2 + (dataInput[11]-dataLatih[i+1][11])**2+ (dataInput[12]-dataLatih[i+1][12])**2 + (dataInput[13]-dataLatih[i+1][13])**2 + (dataInput[14]-dataLatih[i+1][14])**2+ (dataInput[15]-dataLatih[i+1][15])**2 + (dataInput[16]-dataLatih[i+1][16])**2 + (dataInput[17]-dataLatih[i+1][17])**2+ (dataInput[18]-dataLatih[i+1][18])**2 + (dataInput[19]-dataLatih[i+1][19])**2 + (dataInput[20]-dataLatih[i+1][20])**2+ (dataInput[21]-dataLatih[i+1][21])**2
+        nilaiEuclidean.append(baru**(1/2))
+    return nilaiEuclidean
+
+def weighting(validation, euclidean):
+    nilaiWeight = []
+    for i in range(len(validation)):
+        nilai = validation[i] * (1/(euclidean[i]+0.5))
+        nilaiWeight.append(nilai)
+    return nilaiWeight
+
+def terbesar(k,value):
+    index = []
+    for i in range(k):
+        indexTerbesar = value.index(max(value))
+        index.append(1+indexTerbesar)
+        value[indexTerbesar] = 0
+    return index
+
+def diagnosis(datalatih, index):
+    hasil = []
+    beracun = 0
+    tidakBeracun = 0
+    for i in range(len(index)):
+        kelas = datalatih[index[i]][22]
+        hasil.append(kelas)
+    for i in range(len(hasil)):
+        if(hasil[i]=="p"):
+            beracun += 1
+        else:
+            tidakBeracun += 1
+    if beracun > tidakBeracun:
+        return "Beracun"
+    else:
+        return "Tidak Beracun"
 
 def RUN():
     dictLatih = {1:[0.47,0.55,0.45,0.18,1,0.49,0.56,0.89,0.16,0.54,0.23,0.3,0.31,0.38,0.38,0.48,0.49,0.51,0.21,0.12,0.29,0.74,'p'],
@@ -121,19 +159,21 @@ def RUN():
                 50:[0.72,0.54,0.45,0.69,1,0.49,0.56,0.89,1,0.44,0.71,0.3,0.94,0.38,0.38,0.48,0.49,0.51,0.64,0.76,0.7,0.71,'p']
                 }
     # data = ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x']
+    # data = ['b','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x']
+    # data = ['x','f','n','f','p','f','w','b','n','t','e','s','f','w','w','p','w','o','e','k','a','g']
     data = ['x','f','n','f','n','f','w','b','n','t','e','s','f','w','w','p','w','o','e','k','a','g']
-    k = 5
+    k = 3
     hasil = ""
     if(ruleKhusus(data)==True):
         hasil ="Beracun"
     else:
         dataBaru = numeric(data)
-        # print(len(dictLatih))
-        validasi(dictLatih,k)
-        # print(dataBaru)
-
-
-
+        valid = validasi(dictLatih,k)
+        euclidean = euclideanDistance(dataBaru,dictLatih)
+        weight = weighting(valid,euclidean)
+        indexTerbesar = terbesar(k,weight)
+        hasil = diagnosis(dictLatih,indexTerbesar)
+    print(hasil)
 
 if __name__ == '__main__':
     RUN()
